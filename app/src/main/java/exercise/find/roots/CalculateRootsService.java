@@ -29,6 +29,7 @@ public class CalculateRootsService extends IntentService {
                 successIntent.putExtra("original_number", numberToCalculateRootsFor);
                 successIntent.putExtra("root1", root1);
                 successIntent.putExtra("root2", (long) (numberToCalculateRootsFor / root1));
+                successIntent.putExtra("calculation_time",(long)(totalTimeMs/1000));
                 success = true;
                 sendBroadcast(successIntent);
                 break;
