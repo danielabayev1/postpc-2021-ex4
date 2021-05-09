@@ -18,7 +18,7 @@ public class SuccessActivity extends AppCompatActivity {
         long originalNumber = intentCreatedMe.getLongExtra("original_number", 0);
         long calculationTime = intentCreatedMe.getLongExtra("calculation_time", 0);
         String equation = intentCreatedMe.getStringExtra("equation");
-        String result = originalNumber + "\n" + calculationTime+"\n" + equation;
+        String result = "original number: "+originalNumber + "\n" + "calculation time: "+calculationTime+" sec\n" + equation;
         textView.setText(result);
     }
 }

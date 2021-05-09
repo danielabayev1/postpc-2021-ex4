@@ -29,7 +29,17 @@ public class CalculateRootsService extends IntentService {
                 successIntent.putExtra("original_number", numberToCalculateRootsFor);
                 successIntent.putExtra("root1", root1);
                 successIntent.putExtra("root2", (long) (numberToCalculateRootsFor / root1));
-                successIntent.putExtra("calculation_time",(long)(totalTimeMs/1000));
+                successIntent.putExtra("calculation_time", (long) (totalTimeMs / 1000));
+                success = true;
+                sendBroadcast(successIntent);
+                break;
+            }
+            if ((long) Math.sqrt(numberToCalculateRootsFor) < root1) {
+                Intent successIntent = new Intent("found_roots");
+                successIntent.putExtra("original_number", numberToCalculateRootsFor);
+                successIntent.putExtra("root1", 1L);
+                successIntent.putExtra("root2", numberToCalculateRootsFor);
+                successIntent.putExtra("calculation_time", (long) (totalTimeMs / 1000));
                 success = true;
                 sendBroadcast(successIntent);
                 break;
@@ -39,7 +49,7 @@ public class CalculateRootsService extends IntentService {
         if (!success) {
             Intent failureIntent = new Intent("stopped_calculations");
             failureIntent.putExtra("original_number", numberToCalculateRootsFor);
-            failureIntent.putExtra("time_until_give_up_seconds", (long)(totalTimeMs/1000));
+            failureIntent.putExtra("time_until_give_up_seconds", (long) (totalTimeMs / 1000));
             sendBroadcast(failureIntent);
         }
     /*
