@@ -7,19 +7,40 @@ import android.util.Log;
 public class CalculateRootsService extends IntentService {
 
 
-  public CalculateRootsService() {
-    super("CalculateRootsService");
-  }
-
-  @Override
-  protected void onHandleIntent(Intent intent) {
-    if (intent == null) return;
-    long timeStartMs = System.currentTimeMillis();
-    long numberToCalculateRootsFor = intent.getLongExtra("number_for_service", 0);
-    if (numberToCalculateRootsFor <= 0) {
-      Log.e("CalculateRootsService", "can't calculate roots for non-positive input" + numberToCalculateRootsFor);
-      return;
+    public CalculateRootsService() {
+        super("CalculateRootsService");
     }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        if (intent == null) return;
+        long timeStartMs = System.currentTimeMillis();
+        long numberToCalculateRootsFor = intent.getLongExtra("number_for_service", 0);
+        if (numberToCalculateRootsFor <= 0) {
+            Log.e("CalculateRootsService", "can't calculate roots for non-positive input" + numberToCalculateRootsFor);
+            return;
+        }
+        long totalTimeMs;
+        long root1 = 2;
+        boolean success = false;
+        while ((totalTimeMs = System.currentTimeMillis() - timeStartMs) <= 20000) {
+            if ((long) (numberToCalculateRootsFor % root1) == 0) {
+                Intent successIntent = new Intent("found_roots");
+                successIntent.putExtra("original_number", numberToCalculateRootsFor);
+                successIntent.putExtra("root1", root1);
+                successIntent.putExtra("root2", (long) (numberToCalculateRootsFor / root1));
+                success = true;
+                sendBroadcast(successIntent);
+                break;
+            }
+            root1++;
+        }
+        if (!success) {
+            Intent failureIntent = new Intent("stopped_calculations");
+            failureIntent.putExtra("original_number", numberToCalculateRootsFor);
+            failureIntent.putExtra("time_until_give_up_seconds", (long)(totalTimeMs/1000));
+            sendBroadcast(failureIntent);
+        }
     /*
     TODO:
      calculate the roots.
@@ -41,5 +62,6 @@ public class CalculateRootsService extends IntentService {
        for input "829851628752296034247307144300617649465159", after 20 seconds give up
 
      */
-  }
+
+    }
 }
