@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     // TODO: add any other fields to the activity as you want
     private BroadcastReceiver broadcastReceiverForFailure = null;
     boolean isCalculating = false;
+    private String inputText = "";
 
 
     @Override
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 // text did change
                 String newText = editTextUserInput.getText().toString();
                 // todo: check conditions to decide if button should be enabled/disabled (see spec below)
+                inputText = newText;
                 if (!isCalculating) {
                     try {
                         long userInputLong = Long.parseLong(newText);
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intentToOpenService = new Intent(MainActivity.this, CalculateRootsService.class);
             String userInputString = editTextUserInput.getText().toString();
             // todo: check that `userInputString` is a number. handle bad input. convert `userInputString` to long
+            inputText = userInputString;
             try {
                 long userInputLong = Long.parseLong(userInputString);
                 if (!isCalculating && userInputLong >= 0) {
@@ -162,12 +165,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         // TODO: put relevant data into bundle as you see fit
+        outState.putBoolean("calculation_state", this.isCalculating);
+        outState.putString("text", this.inputText);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         // TODO: load data from bundle and set screen state (see spec below)
+        this.isCalculating = savedInstanceState.getBoolean("calculation_state");
+        this.inputText = savedInstanceState.getString("text");
+
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        EditText editTextUserInput = findViewById(R.id.editTextInputNumber);
+        Button buttonCalculateRoots = findViewById(R.id.buttonCalculateRoots);
+
+        if (this.isCalculating) {
+            progressBar.setVisibility(View.VISIBLE);
+            editTextUserInput.setEnabled(false);
+            buttonCalculateRoots.setEnabled(false);
+
+        }
     }
 }
 

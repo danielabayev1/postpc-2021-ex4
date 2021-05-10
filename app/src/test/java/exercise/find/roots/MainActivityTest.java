@@ -47,6 +47,42 @@ public class MainActivityTest extends TestCase {
 
     // test: insert input to the edit text and verify that the button is enabled
     // TODO: implement
+    assertFalse(button.isEnabled());
+    inputEditText.setText("39");
+    assertTrue(button.isEnabled());
+
+  }
+  @Test
+  public void when_userIsEnteringGoodInput_and_then_deletesIt_theButtonShouldBeEnabled_and_then_beDisabled(){
+    // create a MainActivity and let it think it's currently displayed on the screen
+    MainActivity mainActivity = Robolectric.buildActivity(MainActivity.class).create().visible().get();
+
+    // find the edit-text and the button
+    EditText inputEditText = mainActivity.findViewById(R.id.editTextInputNumber);
+    Button button = mainActivity.findViewById(R.id.buttonCalculateRoots);
+
+    //test
+    assertFalse(button.isEnabled());
+    inputEditText.setText("39");
+    assertTrue(button.isEnabled());
+    inputEditText.setText("");
+    assertFalse(button.isEnabled());
+  }
+
+  @Test
+  public void when_startingCalculation_then_buttonShouldBeDisabled(){
+    // create a MainActivity and let it think it's currently displayed on the screen
+    MainActivity mainActivity = Robolectric.buildActivity(MainActivity.class).create().visible().get();
+
+    // find the edit-text and the button
+    EditText inputEditText = mainActivity.findViewById(R.id.editTextInputNumber);
+    Button button = mainActivity.findViewById(R.id.buttonCalculateRoots);
+
+    //test
+    inputEditText.setText("9181531581341931811");
+    assertTrue(button.isEnabled());
+    button.performClick();
+    assertFalse(button.isEnabled());
   }
 
   // TODO: add 1 or 2 more unit tests to the activity. so your "writing tests" skill won't get rusty.
