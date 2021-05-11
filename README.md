@@ -1,3 +1,11 @@
+I pledge the highest level of ethical principles in support of academic excellence.
+I ensure that all of my work reflects my own abilities and not those of someone else
+
+## answer for hypothetical question:
+we can add in the test unit the 'extra':("max_time_to_calculate", 200) to the intent and in the code
+of the calculateRootsService I will check if this field is exist, then i will run until
+"max_time_to_calculate", else 20 seconds.
+
 # Find Roots
 
 An Android exercise for developers teaching how to play around with intents, activities, services and broadcast receivers
