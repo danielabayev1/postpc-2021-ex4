@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
         buttonCalculateRoots.setOnClickListener(v -> {
             Intent intentToOpenService = new Intent(MainActivity.this, CalculateRootsService.class);
             String userInputString = editTextUserInput.getText().toString();
-            // todo: check that `userInputString` is a number. handle bad input. convert `userInputString` to long
+            // todo: check that `userInputString` is a number. handle bad input. convert `userInputString` to long.
+            // todo: set views states according to the spec (below)
             inputText = userInputString;
             try {
                 long userInputLong = Long.parseLong(userInputString);
@@ -85,10 +86,8 @@ public class MainActivity extends AppCompatActivity {
                     buttonCalculateRoots.setEnabled(false);
                     isCalculating = true;
                     startService(intentToOpenService);
-
-
                 }
-                // todo: set views states according to the spec (below)
+
             } catch (NumberFormatException ignored) {
             }
 
